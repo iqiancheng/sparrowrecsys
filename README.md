@@ -25,7 +25,7 @@ SparrowRecSys技术架构遵循经典的工业级深度学习推荐系统架构�
 * DeepWalk (Random Walk based Graph Embedding)
 * Embedding MLP
 * Wide&Deep
-* Nerual CF
+* Neural CF
 * Two Towers
 * DeepFM
 * DIN(Deep Interest Network)

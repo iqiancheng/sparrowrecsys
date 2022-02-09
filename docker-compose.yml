@@ -1,0 +1,15 @@
+version: '2'
+services:
+  sparrowrecsys:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sparrowrecsys
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "8080:6010"
+    tty: true
+    environment:
+      - TZ=Asia/Shanghai

@@ -29,7 +29,7 @@ class UdfFunction:
         pairs = sorted(pairs, key=lambda x: x[1])
         return [x[0] for x in pairs]
 
-
+# 将样本数据转换为向量，只有向量才能作为ML的input/output
 def processItemSequence(spark, rawSampleDataPath):
     # rating data
     ratingSamples = spark.read.format("csv").option("header", "true").load(rawSampleDataPath)
@@ -190,12 +190,18 @@ if __name__ == '__main__':
     file_path = 'file:///home/hadoop/SparrowRecSys/src/main/resources'
     rawSampleDataPath = file_path + "/webroot/sampledata/ratings.csv"
     embLength = 10
+
+    # 将电影数据训练为向量
     samples = processItemSequence(spark, rawSampleDataPath)
     model = trainItem2vec(spark, samples, embLength,
                           embOutputPath=file_path[7:] + "/webroot/modeldata2/item2vecEmb.csv", saveToRedis=False,
                           redisKeyPrefix="i2vEmb")
+    
+    # 将训练好的电影向量展示出来
     graphEmb(samples, spark, embLength, embOutputFilename=file_path[7:] + "/webroot/modeldata2/itemGraphEmb.csv",
              saveToRedis=True, redisKeyPrefix="graphEmb")
+    
+    # 将用户数据训练为向量
     generateUserEmb(spark, rawSampleDataPath, model, embLength,
                     embOutputPath=file_path[7:] + "/webroot/modeldata2/userEmb.csv", saveToRedis=False,
                     redisKeyPrefix="uEmb")
